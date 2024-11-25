@@ -1,7 +1,8 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
-import { Link } from "react-router-dom";
-import logo from '../../images/logo.png';
+import { Link, useNavigate } from "react-router-dom";
+import logo from "../../images/logo.png";
+import axios from "axios";
 
 const Container = styled.div`
   width: 400px;
@@ -9,12 +10,10 @@ const Container = styled.div`
   text-align: center;
 `;
 
-
 export const Logo = styled.img`
   width: 150px;
   height: auto;
 `;
-
 
 const Tabs = styled.div`
   display: flex;
@@ -73,6 +72,109 @@ const Form = styled.form`
 
 const LoginRegister = () => {
   const [activeTab, setActiveTab] = useState("login");
+  const [isAdmin, setIsAdmin] = useState(false); // 관리자 체크박스 상태
+  const navigate = useNavigate();
+  //const [isLoggedIn, setIsLoggedIn] = useState(false);
+
+  // 로그인
+  const [loginData, setLoginData] = useState({ email: "", password: "" });
+
+  // 회원가입
+  const [registerData, setRegisterData] = useState({
+    email: "",
+    password: "",
+    nickname: "",
+    status: "",
+    confirmPassword: "",
+  });
+
+  const [loginError, setLoginError] = useState(null);
+  const [registerError, setRegisterError] = useState(null);
+  const [passwordError, setPasswordError] = useState(null);
+
+  const handleLoginSubmit = async (e) => {
+    e.preventDefault();
+    setLoginError(null);
+    try {
+      const response = await axios.post("/member/login", loginData);
+      console.log("로그인?:", response.data);
+      if (response.data.isSuccess) {
+        localStorage.setItem(
+          "user",
+          JSON.stringify({
+            memberId: response.data.result?.memberId,
+            nickname: response.data.result?.nickname,
+            email: response.data.result?.email,
+            isLogin: true,
+          })
+        );
+        navigate("/");
+      } // 로그인 성공 후 리디렉션
+    } catch (error) {
+      if (error.response) {
+        // 서버에서 반환한 에러
+        console.error("로그인 실패:", error.response.data.message);
+      } else if (error.request) {
+        // 요청이 보내졌으나 응답이 없음
+        console.error("서버 응답이 없습니다.");
+      } else {
+        // 요청 설정 중 에러 발생
+        console.error("오류 발생:", error.message);
+      }
+      setLoginError(error.response?.data?.message || "로그인 실패");
+    }
+  };
+
+  // 회원가입 핸들러
+  const handleRegisterSubmit = async (e) => {
+    e.preventDefault();
+    setRegisterError(null);
+    setPasswordError(null);
+
+    try {
+      const { confirmPassword, ...dataToSend } = registerData;
+      const response = await axios.post("/member/signup", dataToSend);
+
+      navigate("/login"); // 회원가입 성공 후 로그인 페이지로 리디렉션
+    } catch (error) {
+      if (error.response) {
+        // 서버에서 반환한 에러
+        console.error("회원가입 실패:", error.response.data.message);
+      } else if (error.request) {
+        // 요청이 보내졌으나 응답이 없음
+        console.error("서버 응답이 없습니다.");
+      } else {
+        // 요청 설정 중 에러 발생
+        console.error("오류 발생:", error.message);
+      }
+      setRegisterError(error.response?.data?.message || "회원가입 실패");
+    }
+  };
+
+  useEffect(() => {
+    if (registerData.password !== registerData.confirmPassword) {
+      setPasswordError("비밀번호가 다릅니다");
+    } else {
+      setPasswordError(null); // 비밀번호 일치 시 에러 메시지 제거
+    }
+  }, [registerData.password, registerData.confirmPassword]);
+
+  const handleChange = (setter) => (e) => {
+    const { name, value } = e.target;
+    setter((prev) => ({ ...prev, [name]: value }));
+  };
+  // 관리자 체크박스 변경 핸들러
+  const handleAdminChange = (e) => {
+    const checked = e.target.checked;
+    setIsAdmin(checked);
+
+    // 관리자 체크박스를 클릭한 경우, registerData에 status를 'manager'로 설정
+    if (checked) {
+      setRegisterData((prev) => ({ ...prev, status: "manager" }));
+    } else {
+      setRegisterData((prev) => ({ ...prev, status: "user" }));
+    }
+  };
 
   return (
     <Container>
@@ -80,37 +182,105 @@ const LoginRegister = () => {
         <Logo src={logo} alt="만두마켓 로고" />
       </Link>
       <Tabs>
-        <Tab active={activeTab === "login"} onClick={() => setActiveTab("login")}>
+        <Tab
+          active={activeTab === "login"}
+          onClick={() => setActiveTab("login")}
+        >
           로그인
         </Tab>
-        <Tab active={activeTab === "register"} onClick={() => setActiveTab("register")}>
+        <Tab
+          active={activeTab === "register"}
+          onClick={() => setActiveTab("register")}
+        >
           회원가입
         </Tab>
       </Tabs>
       {activeTab === "login" ? (
-        <Form>
+        <Form onSubmit={handleLoginSubmit}>
           <Classify>아이디</Classify>
-          <input type="email" placeholder="아이디 또는 이메일" required />
+          <input
+            type="email"
+            name="email"
+            placeholder="아이디 또는 이메일"
+            value={loginData.email}
+            onChange={handleChange(setLoginData)}
+            required
+          />
           <Classify>비밀번호</Classify>
-          <input type="password" placeholder="비밀번호" required />
+          <input
+            type="password"
+            name="password"
+            placeholder="비밀번호"
+            value={loginData.password}
+            onChange={handleChange(setLoginData)}
+            required
+          />
+          {loginError && <div style={{ color: "red" }}>{loginError}</div>}
           <button type="submit">로그인</button>
           <div style={{ marginTop: "10px", fontSize: "12px", color: "#888" }}>
             아이디 찾기 / 비밀번호 찾기
           </div>
-          <div style={{marginTop: "20px", display: "flex",padding: "0",  marginLeft:"230px",gap: "0px",flexWrap: "nowrap" }}>
-         <input type="checkbox" id="admin" style={{ alignItems: "flex-end",margin:"0" }} />
-         <label htmlFor="admin" style={{ whiteSpace: "nowrap" }}>관리자 로그인</label>
-  </div>
         </Form>
       ) : (
-        <Form>
-           <Classify>닉네임</Classify>
-          <input type="text" placeholder="닉네임" required />
+        <Form onSubmit={handleRegisterSubmit}>
+          <Classify>닉네임</Classify>
+          <input
+            type="text"
+            name="nickname"
+            placeholder="닉네임"
+            value={registerData.nickname}
+            onChange={handleChange(setRegisterData)}
+            required
+          />
           <Classify>이메일</Classify>
-          <input type="email" placeholder="이메일" required />
+          <input
+            type="email"
+            name="email"
+            placeholder="이메일"
+            value={registerData.email}
+            onChange={handleChange(setRegisterData)}
+            required
+          />
           <Classify>비밀번호</Classify>
-          <input type="password" placeholder="비밀번호" required />
-          <input type="password" placeholder="비밀번호 확인" required />
+          <input
+            type="password"
+            name="password"
+            placeholder="비밀번호"
+            value={registerData.password}
+            onChange={handleChange(setRegisterData)}
+            required
+          />
+          <input
+            type="password"
+            name="confirmPassword"
+            placeholder="비밀번호 확인"
+            value={registerData.confirmPassword}
+            onChange={handleChange(setRegisterData)}
+            required
+          />
+          <div
+            style={{
+              marginTop: "20px",
+              display: "flex",
+              padding: "0",
+              marginLeft: "230px",
+              gap: "0px",
+              flexWrap: "nowrap",
+            }}
+          >
+            <input
+              type="checkbox"
+              id="admin"
+              checked={isAdmin}
+              onChange={handleAdminChange}
+              style={{ alignItems: "flex-end", margin: "0" }}
+            />
+            <label htmlFor="admin" style={{ whiteSpace: "nowrap" }}>
+              관리자 로그인
+            </label>
+          </div>
+          {passwordError && <div style={{ color: "red" }}>{passwordError}</div>}
+          {registerError && <div style={{ color: "red" }}>{registerError}</div>}
           <button type="submit">회원가입</button>
         </Form>
       )}
