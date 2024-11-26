@@ -68,8 +68,12 @@ export default function ManagePage() {
             <Button>정렬기준</Button>
           </ButtonList>
         </Header>
+<<<<<<< HEAD
         {/* <Table columns={columns} data={data} /> */}
         <Tab />
+=======
+        <Table columns={columns} data={data} />
+>>>>>>> master
       </RightContainer>
     </Container>
   );

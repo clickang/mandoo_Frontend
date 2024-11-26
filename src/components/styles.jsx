@@ -15,7 +15,7 @@ export const NavbarContainer2 = styled.div`
   flex-direction: row; /* 세로 방향으로 배치 */
   padding: 10px 20px;
   background-color: #fff;
-  border-bottom: 1px solid #ddd;
+  // border-bottom: 1px solid #ddd;
 `;
 export const Logo = styled.img`
   //padding-left:3%;
