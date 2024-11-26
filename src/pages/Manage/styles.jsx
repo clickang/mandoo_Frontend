@@ -40,11 +40,12 @@ export const Button = styled.div`
 `;
 
 export const RightContainer = styled.div`
-  padding-top: 50px;
   display: flex;
   flex-direction: column; /* 세로 정렬을 위해 추가 */
   // align-items: stretch; /* 요소를 수직 가운데 정렬 */
   // justify-content: center; /* 필요에 따라 수평 정렬 */
   background-color: #f2f2f2;
+  padding: 0px 10px;
+  padding-top: 50px;
   width: 100%;
 `;

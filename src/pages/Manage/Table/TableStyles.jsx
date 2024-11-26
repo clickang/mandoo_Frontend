@@ -1,62 +1,39 @@
 import styled from "styled-components";
 
-const TableContainer = styled.div`
+export const TableSheet = styled.table`
+  /* div에서 table로 변경 */
   width: 100%;
-  height: 100%;
-  display: flex;
-  flex-direction: column;
+  border-collapse: collapse; /* 테두리를 병합하여 깔끔하게 표시 */
+  table-layout: auto; /* 열 너비를 콘텐츠에 맞게 자동 조정 */
   font-size: 14px;
-
-  .row {
-    width: 100%;
-    display: flex;
-    border-bottom: 1px solid rgba(224, 224, 224, 1);
-  }
 `;
 
-const TableCell =
-  styled.div <
-  { width: number } >
-  `
-  width: ${({ width }) => width}px;
-  padding: 16px;
-  color: rgba(0, 0, 0, 0.87);
-  display: flex;
-  align-items: center;
-  word-break: break-all;
+export const TableHead = styled.thead`
+  /* thead로 변경 */
+  font-weight: 500;
+  background-color: #d9d9d9;
 `;
 
-const TableRow = styled.div`
+export const Header = styled.tr``;
+
+export const Th = styled.th`
+  border: 1px solid #b7b7b7;
+  padding: 8px;
+  text-align: left;
+  white-space: nowrap; /* 텍스트 줄바꿈 방지 */
+  font-size: 11px;
+`;
+
+export const Td = styled.td`
+  padding: 10px;
+  border: 1px solid #ddd;
+  text-align: left;
+  font-size: 11px;
+`;
+
+export const TableRow = styled.tr`
+  /* tr로 변경 */
   &:hover {
     background-color: rgba(0, 0, 0, 0.04);
   }
-`;
-
-const TableSubRow = styled.div`
-  width: 100%;
-  padding: 24px;
-`;
-
-const TableHeader = styled.div`
-  font-weight: 500;
-`;
-
-const TableBody =
-  styled.div <
-  { useMinHeight: boolean } >
-  `
-  min-height: ${({ useMinHeight }) => (useMinHeight ? "560px" : "auto")};
-  display: flex;
-  flex-direction: column;
-`;
-
-const NoDataComponent =
-  styled.div <
-  { useMinHeight: boolean } >
-  `
-  width: 100%;
-  height: ${({ useMinHeight }) => (useMinHeight ? "560px" : "auto")};
-  display: flex;
-  justify-content: center;
-  align-items: center;
 `;

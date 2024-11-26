@@ -1,5 +1,7 @@
-import React, { useMemo } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import Sidebar from "./SideBar/SideBar";
+import axios from "axios";
+
 import {
   Button,
   ButtonList,
@@ -11,51 +13,53 @@ import {
 import Table from "./Table/Table";
 import Tab from "./Tab/Tab";
 export default function ManagePage() {
+  const [info, setInfo] = useState([]);
   const columnData = [
+    {
+      accessor: "createdAt",
+      Header: "Created At",
+    },
+    {
+      accessor: "completedSellPostCount",
+      Header: "Completed SellPost Count",
+    },
+    {
+      accessor: "likeSellPostCount",
+      Header: "Completed SellPost Count",
+    },
     {
       accessor: "email",
       Header: "Email",
     },
     {
-      accessor: "walletID",
-      Header: "Wallet ID",
+      accessor: "name",
+      Header: "Name",
     },
     {
-      accessor: "coin_list",
-      Header: "Wallet Balance",
+      accessor: "nickName",
+      Header: "Nickname",
     },
     {
-      accessor: "created_at",
-      Header: "Created At",
-    },
-    {
-      accessor: "edited_at",
-      Header: "Edited At",
+      accessor: "passWord",
+      Header: "PassWord",
     },
   ];
 
   const columns = useMemo(() => columnData, []);
 
-  const data = useMemo(
-    () => [
-      {
-        email: "이메일이에용",
-        walletID: "아이디에용",
-        created_at: "2021-08-03 01:14:47",
-        edited_at: "2021-08-03 01:15:49",
-        coin_list: ["TRV", "BTC", "BCH", "ETH"],
-      },
-    ],
-    []
-  );
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await axios.get("/manage/member");
+        setInfo(response.data.result);
+      } catch (error) {
+        console.error("Axios error:", error);
+      }
+    };
+    fetchData();
+  }, []);
 
-  // const [info, setInfo] = useState();
-
-  // const getTamWallet = () => {
-  //   data.getTamWallet().then(item => setInfo(item));
-  // };
-
-  // const data = useMemo(() => info, [info])
+  const data = useMemo(() => info, [info]);
 
   return (
     <Container>
@@ -68,12 +72,7 @@ export default function ManagePage() {
             <Button>정렬기준</Button>
           </ButtonList>
         </Header>
-<<<<<<< HEAD
-        {/* <Table columns={columns} data={data} /> */}
-        <Tab />
-=======
         <Table columns={columns} data={data} />
->>>>>>> master
       </RightContainer>
     </Container>
   );

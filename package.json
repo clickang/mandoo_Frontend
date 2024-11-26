@@ -4,16 +4,12 @@
   "private": true,
   "dependencies": {
     "@fortawesome/fontawesome-free": "^6.7.1",
-    "@react-navigation/material-top-tabs": "^7.0.11",
-    "@react-navigation/native": "^7.0.6",
-    "@tanstack/react-table": "^8.20.5",
     "@testing-library/jest-dom": "^5.17.0",
     "@testing-library/react": "^13.4.0",
     "@testing-library/user-event": "^13.5.0",
+    "axios": "^1.7.8",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
-    "react-native": "^0.76.3",
-    "react-native-tab-view": "^4.0.4",
     "react-router-dom": "^6.28.0",
     "react-scripts": "5.0.1",
     "react-table": "^7.8.0",
@@ -32,6 +28,7 @@
       "react-app/jest"
     ]
   },
+  "proxy": "http://localhost:8080",
   "browserslist": {
     "production": [
       ">0.2%",

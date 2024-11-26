@@ -14,38 +14,6 @@ export default function Sidebar() {
   };
 
   return (
-<<<<<<< HEAD
-    <S.SidebarContainer>
-      <S.Logo src={logo} alt="만두마켓 로고" />
-      <S.SidebarList>
-        <S.SidebarButton
-          key={1}
-          isSelected={selectedButton === 1} // 선택된 상태 여부
-          onClick={() => handleButtonClick(1, "/manage/dashboard")}
-        >
-          <span>대시보드</span>
-        </S.SidebarButton>
-        <S.SidebarButton
-          key={2}
-          isSelected={selectedButton === 2}
-          onClick={() => handleButtonClick(2, "/manage//member")}
-        >
-          <span>사용자관리</span>
-        </S.SidebarButton>
-        <S.SidebarButton
-          key={3}
-          isSelected={selectedButton === 3}
-          onClick={() => handleButtonClick(3, "/manage/report")}
-        >
-          <span>신고관리</span>
-        </S.SidebarButton>
-      </S.SidebarList>
-      <S.MiniMenu>
-        <S.MiniButton>관리자 모드</S.MiniButton>
-        <S.MiniButton>로그아웃</S.MiniButton>
-      </S.MiniMenu>
-    </S.SidebarContainer>
-=======
     <Fragment>
       <S.SidebarContainer>
         <S.Logo src={logo} alt="만두마켓 로고" />
@@ -60,7 +28,7 @@ export default function Sidebar() {
           <S.SidebarButton
             key={2}
             isSelected={selectedButton === 2}
-            onClick={() => handleButtonClick(2, "/manage//member")}
+            onClick={() => handleButtonClick(2, "/manage/member")}
           >
             <span>사용자관리</span>
           </S.SidebarButton>
@@ -78,6 +46,5 @@ export default function Sidebar() {
         </S.MiniMenu>
       </S.SidebarContainer>
     </Fragment>
->>>>>>> master
   );
 }
