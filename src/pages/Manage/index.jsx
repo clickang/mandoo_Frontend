@@ -9,6 +9,7 @@ import {
   Title,
 } from "./styles";
 import Table from "./Table/Table";
+import Tab from "./Tab/Tab";
 export default function ManagePage() {
   const columnData = [
     {
@@ -67,7 +68,8 @@ export default function ManagePage() {
             <Button>정렬기준</Button>
           </ButtonList>
         </Header>
-        <Table columns={columns} data={data} />
+        {/* <Table columns={columns} data={data} /> */}
+        <Tab />
       </RightContainer>
     </Container>
   );

@@ -3,15 +3,16 @@ import styled from "styled-components";
 export const Container = styled.div`
   display: flex;
   flex-direction: row;
+  height: 100vh;
 `;
 
 export const Header = styled.div`
   display: flex;
-  flex-direction: row;
-  gap: 300px;
-  padding-left: 30px;
-  padding-bottom: 10px;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 30px;
   width: 100%;
+  box-sizing: border-box; /* padding을 포함하여 너비를 계산 */
 `;
 
 export const Title = styled.div`
@@ -42,8 +43,8 @@ export const RightContainer = styled.div`
   padding-top: 50px;
   display: flex;
   flex-direction: column; /* 세로 정렬을 위해 추가 */
-  align-items: center; /* 요소를 수직 가운데 정렬 */
-  justify-content: center; /* 필요에 따라 수평 정렬 */
+  // align-items: stretch; /* 요소를 수직 가운데 정렬 */
+  // justify-content: center; /* 필요에 따라 수평 정렬 */
   background-color: #f2f2f2;
   width: 100%;
 `;

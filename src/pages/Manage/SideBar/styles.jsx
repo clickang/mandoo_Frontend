@@ -3,10 +3,11 @@ import React, { useState } from "react";
 
 export const SidebarContainer = styled.nav`
   background-color: #383737;
-  height: 100vh;
   width: 30vh;
   flex-direction: column; /* 세로 정렬 */
   display: flex;
+  padding-bottom: 30px;
+  height: 100%;
 `;
 
 export const SidebarList = styled.ul`
