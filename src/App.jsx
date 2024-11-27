@@ -9,7 +9,8 @@ import Navbar from "./components/Navbar";
 import Home from "./pages/Home";
 import Mypage from "./pages/Mypage";
 import Login from "./pages/Login/Login";
-import ManagePage from "./pages/Manage";
+import DashBoardPage from "./pages/Manage/DashBoard";
+import MemberPage from "./pages/Manage/Member";
 
 function App() {
   const location = useLocation();
@@ -24,9 +25,10 @@ function App() {
         <Route path="/" element={<Home />} />
         <Route path="/mypage" element={<Mypage />} />
         <Route path="/login" element={<Login />} />
-        <Route path="/manage" element={<ManagePage />} />
-        {/* 추가적인 /manage 하위 경로를 위한 라우트도 설정 */}
-        <Route path="/manage/*" element={<ManagePage />} />
+        <Route path="/manage" element={<DashBoardPage />} />
+        <Route path="/manage/dashboard" element={<DashBoardPage />} />
+        <Route path="/manage/member" element={<MemberPage />} />
+        <Route path="/manage/report" element={<DashBoardPage />} />
       </Routes>
     </>
   );

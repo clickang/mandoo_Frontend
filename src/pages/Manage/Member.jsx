@@ -12,7 +12,7 @@ import {
 } from "./styles";
 import Table from "./Table/Table";
 import Tab from "./Tab/Tab";
-export default function ManagePage() {
+export default function MemberPage() {
   const [info, setInfo] = useState([]);
   const columnData = [
     {
