@@ -1,11 +1,13 @@
 import React, { useState } from "react";
-import * as S from "./styles";
+import * as S from "./SideBarStyles";
 import { useNavigate } from "react-router-dom";
 import logo from "../../../images/logo_v2.png";
 import { Fragment } from "react";
 
-export default function Sidebar() {
-  const [selectedButton, setSelectedButton] = useState(null);
+export default function Sidebar({ initialSelectedButton }) {
+  const [selectedButton, setSelectedButton] = useState(
+    initialSelectedButton || null
+  );
   const navigate = useNavigate(); // useNavigate 훅 사용
 
   const handleButtonClick = (index, path) => {

@@ -7,15 +7,17 @@ export const Test = styled.div`
 export const TabButton = styled.div`
   list-style-type: none;
   background-color: white;
-  border-radius: 8px;
+  border-radius: 8px 8px 0 0;
   border: none;
   cursor: pointer;
   box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);
-  width: 100px;
+  width: 80px;
   height: 30px;
   display: flex;
+  font-size: 12px;
   align-items: center; /* 요소를 수직 가운데 정렬 */
-  flex-direction: column; /* 세로 정렬을 위해 추가 */
+  justify-content: center;
+  cursor: pointer;
 `;
 
 export const TabList = styled.div`

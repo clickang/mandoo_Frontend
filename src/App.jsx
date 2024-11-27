@@ -11,6 +11,7 @@ import Mypage from "./pages/Mypage";
 import Login from "./pages/Login/Login";
 import DashBoardPage from "./pages/Manage/DashBoard";
 import MemberPage from "./pages/Manage/Member";
+import ReportPage from "./pages/Manage/Report";
 
 function App() {
   const location = useLocation();
@@ -28,7 +29,7 @@ function App() {
         <Route path="/manage" element={<DashBoardPage />} />
         <Route path="/manage/dashboard" element={<DashBoardPage />} />
         <Route path="/manage/member" element={<MemberPage />} />
-        <Route path="/manage/report" element={<DashBoardPage />} />
+        <Route path="/manage/report" element={<ReportPage />} />
       </Routes>
     </>
   );

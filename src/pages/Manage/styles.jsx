@@ -23,6 +23,8 @@ export const ButtonList = styled.div`
   display: flex;
   flex-direction: row; /* 세로 정렬을 위해 추가 */
   gap: 10px; /* 버튼 사이에 10px 간격 추가 */
+  align-items: center; /* 요소를 수직 가운데 정렬 */
+  justify-content: center; /* 필요에 따라 수평 정렬 */
 `;
 
 export const Button = styled.div`
@@ -34,12 +36,13 @@ export const Button = styled.div`
   cursor: pointer;
   font-size: 10px;
   display: flex;
+  justify-content: center;
   align-items: center; /* 요소를 수직 가운데 정렬 */
   flex-direction: column; /* 세로 정렬을 위해 추가 */
   box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);
 `;
 
-export const RightContainer = styled.div`
+export const RightContainer = styled.nav`
   display: flex;
   flex-direction: column; /* 세로 정렬을 위해 추가 */
   // align-items: stretch; /* 요소를 수직 가운데 정렬 */

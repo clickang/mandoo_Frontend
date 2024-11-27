@@ -28,7 +28,7 @@ const IndeterminateCheckbox = React.forwardRef(
   }
 );
 
-const Table = ({ columns, data }) => {
+const Table = ({ columns, data, onSelectedRowsChange }) => {
   const {
     getTableProps,
     getTableBodyProps,
@@ -73,7 +73,12 @@ const Table = ({ columns, data }) => {
     }
   );
 
-  console.log(selectedFlatRows);
+  useEffect(() => {
+    if (selectedFlatRows.length > 0 && onSelectedRowsChange) {
+      onSelectedRowsChange(selectedFlatRows); // Pass selected rows to the parent
+    }
+  }, [selectedFlatRows, onSelectedRowsChange]);
+
   // const [checkItems, setCheckBox] = useState([]);
 
   return (

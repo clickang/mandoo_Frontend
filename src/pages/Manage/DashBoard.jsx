@@ -14,7 +14,7 @@ import {
 export default function DashBoardPage() {
   return (
     <Container>
-      <Sidebar />
+      <Sidebar initialSelectedButton={1} />
       <RightContainer></RightContainer>
     </Container>
   );
