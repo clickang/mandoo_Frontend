@@ -87,7 +87,9 @@ const Navbar = () => {
               <S.MenuButton onClick={handleLogout}>로그아웃</S.MenuButton>
             </>
           )}
-          <S.MenuButton>구매하기</S.MenuButton>
+          <Link to="/sellpost/write">
+            <S.MenuButton>판매하기</S.MenuButton>
+          </Link>
           <Link to="/Mypage">
             <S.MenuButton>마이페이지</S.MenuButton>
           </Link>
