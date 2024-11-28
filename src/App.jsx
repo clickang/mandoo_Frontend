@@ -4,6 +4,7 @@ import Navbar from './components/Navbar';
 import Home from './pages/Home';
 import Mypage from './pages/Mypage';
 import Login from './pages/Login/Login';
+import Write from './pages/Sellpost/WriteComponent'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 
@@ -20,6 +21,7 @@ function App() {
           <Route path="/" element={<Home />} />
           <Route path="/mypage" element={<Mypage />} />
           <Route path="/login" element={<Login />} />
+          <Route path="/sellpost/write" element={<Write />} />
         </Routes>
       </Router>
       {/* React Query Devtools */}
