@@ -30,6 +30,7 @@ const Navbar = () => {
 
   const toggleDropdown = () => {
     setIsOpen((prev) => !prev); // 기존 상태를 반전시켜서 토글
+    console.log("isOpen?" ,isOpen);
   };
 
   const handleLogout = async () => {
@@ -71,10 +72,15 @@ const Navbar = () => {
           카테고리
         </S.CategoryButton>
         <S.CategoryDropdown isOpen={isOpen}>
-          <S.CategoryItem>카테고리 1</S.CategoryItem>
-          <S.CategoryItem>카테고리 2</S.CategoryItem>
-          <S.CategoryItem>카테고리 3</S.CategoryItem>
-          <S.CategoryItem>카테고리 4</S.CategoryItem>
+        <S.CategoryItem>수입 명품</S.CategoryItem>
+          <S.CategoryItem>패션/의류</S.CategoryItem>
+          <S.CategoryItem>뷰티</S.CategoryItem>
+          <S.CategoryItem>출산/유아동</S.CategoryItem>
+          <S.CategoryItem>가전제품</S.CategoryItem>
+          <S.CategoryItem>카메라/캠코더</S.CategoryItem>
+          <S.CategoryItem>모바일/탭플릿</S.CategoryItem>
+          <S.CategoryItem>도서/음반/분류</S.CategoryItem>
+          <S.CategoryItem>노트북/PC</S.CategoryItem>
         </S.CategoryDropdown>
         <S.Menu>
           {!isLogin ? (
