@@ -94,6 +94,7 @@ export default function MemberPage() {
           </ButtonList>
         </Header>
         <Table
+          checkBoxExist={true}
           columns={columns}
           data={data}
           onSelectedRowsChange={(selectedRows) => {

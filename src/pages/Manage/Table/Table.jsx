@@ -28,7 +28,7 @@ const IndeterminateCheckbox = React.forwardRef(
   }
 );
 
-const Table = ({ columns, data, onSelectedRowsChange }) => {
+const Table = ({ columns, data, checkBoxExist, onSelectedRowsChange }) => {
   const {
     getTableProps,
     getTableBodyProps,
@@ -46,41 +46,40 @@ const Table = ({ columns, data, onSelectedRowsChange }) => {
     },
     useRowSelect,
     (hooks) => {
-      hooks.visibleColumns.push((columns) => [
-        // Let's make a column for selection
-        {
-          id: "selection",
-          // The header can use the table's getToggleAllRowsSelectedProps method
-          // to render a checkbox
-          Header: ({ getToggleAllRowsSelectedProps }) => (
-            <div>
-              <IndeterminateCheckbox {...getToggleAllRowsSelectedProps()} />
-            </div>
-          ),
-          // The cell can use the individual row's getToggleRowSelectedProps method
-          // to the render a checkbox
-          Cell: ({ row }) => (
-            <div>
-              <IndeterminateCheckbox
-                {...row.getToggleRowSelectedProps()}
-                row={row}
-              />
-            </div>
-          ),
-        },
-        ...columns,
-      ]);
+      hooks.visibleColumns.push((columns) => {
+        // checkBoxExist가 true일 경우에만 selection 열을 추가
+        if (checkBoxExist) {
+          return [
+            {
+              id: "selection",
+              Header: ({ getToggleAllRowsSelectedProps }) => (
+                <div>
+                  <IndeterminateCheckbox {...getToggleAllRowsSelectedProps()} />
+                </div>
+              ),
+              Cell: ({ row }) => (
+                <div>
+                  <IndeterminateCheckbox
+                    {...row.getToggleRowSelectedProps()}
+                    row={row}
+                  />
+                </div>
+              ),
+            },
+            ...columns, // 나머지 열들은 그대로 추가
+          ];
+        } else {
+          // checkBoxExist가 false일 경우, selection 열을 제외하고 나머지 열만 반환
+          return columns;
+        }
+      });
     }
   );
-
   useEffect(() => {
     if (selectedFlatRows.length > 0 && onSelectedRowsChange) {
-      onSelectedRowsChange(selectedFlatRows); // Pass selected rows to the parent
+      onSelectedRowsChange(selectedFlatRows); // 부모에게 선택된 행을 전달
     }
   }, [selectedFlatRows, onSelectedRowsChange]);
-
-  // const [checkItems, setCheckBox] = useState([]);
-
   return (
     <Fragment>
       <S.TableSheet {...getTableProps()}>
@@ -112,5 +111,6 @@ const Table = ({ columns, data, onSelectedRowsChange }) => {
   );
 };
 
-// Default export
 export default Table;
+
+

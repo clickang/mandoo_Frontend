@@ -113,6 +113,7 @@ export default function ReportPage() {
         </Header>
         <Tab currentTab={currentTab} setCurrentTab={setCurrentTab} />
         <Table
+          checkBoxExist={true}
           columns={columns}
           data={data}
           onSelectedRowsChange={(selectedRows) => {
