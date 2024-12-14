@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import ImageUpload from "./ImageUpload/ImageUpload";
 import RegionSelect from "./RegionSelect/RegionSelect";
+import { useNavigate } from "react-router-dom"; // useNavigate 가져오기
 import {
   Container,
   Form,
@@ -20,6 +21,8 @@ import {
   ButtonWrapper,
 } from "./styles";
 
+import axios from "axios";
+
 export default function WriteComponent() {
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
@@ -37,22 +40,22 @@ export default function WriteComponent() {
   };
 
   const categories = [
-    "수입 명품",
-    "패션의류",
-    "뷰티",
-    "출산/유아동",
-    "가전제품",
-    "카메라/캠코더",
-    "모바일/탬플릿",
-    "도서/음반/문류",
-    "노트북/PC",
+    { id: 1, name: "수입 명품" },
+    { id: 2, name: "패션의류" },
+    { id: 3, name: "뷰티" },
+    { id: 4, name: "출산/유아동" },
+    { id: 5, name: "가전제품" },
+    { id: 6, name: "카메라/캠코더" },
+    { id: 7, name: "모바일/탬플릿" },
+    { id: 8, name: "도서/음반/문류" },
+    { id: 9, name: "노트북/PC" },
   ];
 
-  const handleCategoryClick = (category) => {
+  const handleCategoryClick = (categoryId) => {
     setSelectedCategories((prev) =>
-      prev.includes(category)
-        ? prev.filter((c) => c !== category) // 이미 선택된 경우 제거
-        : [...prev, category] // 선택되지 않은 경우 추가
+      prev.includes(categoryId)
+        ? prev.filter((id) => id !== categoryId) // 이미 선택된 경우 제거
+        : [...prev, categoryId] // 선택되지 않은 경우 추가
     );
   };
 
@@ -64,8 +67,8 @@ export default function WriteComponent() {
   };
   const [region, setRegion] = useState({
     city: "",
-    district: "",
-    neighborhood: "",
+    gu: "",
+    dong: "",
   });
 
   const handleRegionChange = (region) => {
@@ -73,13 +76,10 @@ export default function WriteComponent() {
     setRegion(region);
   };
 
-//   const handleRegionChange = (newRegion) => {
-//     setRegion(newRegion);
-//   };
-
   
 
-  const handleSubmit = (e) => {
+  const navigate = useNavigate();
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
     // 유효성 검사
@@ -99,24 +99,57 @@ export default function WriteComponent() {
     }
 
     // 게시물 데이터 객체
-    if (!region.city || !region.district || !region.neighborhood) {
+    if (!region.city || !region.gu || !region.dong) {
         alert("지역을 선택해 주세요!");
         return;
       }
-  
-      const postData = {
-        title,
-        content,
-        categories: selectedCategories,
-        price: isFree ? "무료 나눔" : price,
-        transactionMethods: Object.keys(transactionMethods).filter(
-          (method) => transactionMethods[method]
-        ),
-        region: `${region.city} ${region.district} ${region.neighborhood}`,
-      };
-  
-      console.log("게시물 데이터:", postData);
-      alert("게시물이 작성되었습니다!");
+
+      const storedUser = localStorage.getItem("user"); 
+      const parsedUser = JSON.parse(storedUser); // JSON 문자열을 객체로 변환
+      const memberId = parsedUser.memberId; // memberId 가져오기
+      if (!memberId) {
+        alert("로그인이 필요합니다!"); 
+      }
+      console.log("멤버 ID:", memberId);
+      console.log("선택된 지역:", region);
+      
+      const formData = new FormData();
+      formData.append("title", title);
+      formData.append("description", content);
+      formData.append("price", isFree ? "무료 나눔" : price);
+      formData.append("city", region.city); // city 추가
+      formData.append("gu", region.gu);     // gu 추가
+      formData.append("dong", region.dong); // dong 추가
+      formData.append("memberId", memberId); // 멤버 ID 추가
+
+       // 카테고리 아이디를 FormData에 추가
+      selectedCategories.forEach((categoryId) =>
+        formData.append("categoryIds[]", categoryId)
+      );
+      Object.keys(transactionMethods)
+        .filter((method) => transactionMethods[method])
+        .forEach((method) => formData.append("transactionMethods[]", method));
+      uploadedImages.forEach((image) => formData.append("images", image)); // 이미지 추가
+
+      console.log("FormData 내용:");
+      for (const [key, value] of formData.entries()) {
+        console.log(`${key}:`, value);
+      }
+    
+      try {
+        const response = await axios.post("/sellpost/write", formData, {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        });
+        console.log("서버 응답 데이터:", response.data);
+        alert("게시물이 성공적으로 등록되었습니다!");
+        navigate("/"); // '/'는 홈 화면 경로 (필요에 따라 변경 가능)
+      } catch (error) {
+        console.error("게시물 등록 중 오류 발생:", error);
+        alert("게시물 등록에 실패했습니다. 다시 시도해 주세요.");
+      }
+      
     };
 
   return (
@@ -152,15 +185,16 @@ export default function WriteComponent() {
           <CategoryContainer>
             {categories.map((category) => (
               <CategoryButton
-                key={category}
+                key={category.id}
                 type="button"
-                isSelected={selectedCategories.includes(category)}
-                onClick={() => handleCategoryClick(category)}
+                isSelected={selectedCategories.includes(category.id)}
+                onClick={() => handleCategoryClick(category.id)}
               >
-                {category}
+                {category.name}
               </CategoryButton>
             ))}
           </CategoryContainer>
+
         </HorizontalField>
 
         {/* 지역 선택 */}

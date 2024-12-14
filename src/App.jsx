@@ -5,6 +5,7 @@ import Home from './pages/Home';
 import Mypage from './pages/Mypage';
 import Login from './pages/Login/Login';
 import Write from './pages/Sellpost/WriteComponent'
+import Read from "./pages/SellpostView/ReadComponent"; // 게시물 세부 정보
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 
@@ -22,6 +23,8 @@ function App() {
           <Route path="/mypage" element={<Mypage />} />
           <Route path="/login" element={<Login />} />
           <Route path="/sellpost/write" element={<Write />} />
+          <Route path="/sellpost/read/:sellPostId" element={<Read />} />
+          
         </Routes>
       </Router>
       {/* React Query Devtools */}

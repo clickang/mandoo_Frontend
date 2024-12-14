@@ -104,28 +104,28 @@ const regions = {
   
   const RegionSelect = ({ onRegionChange }) => {
     const [selectedCity, setSelectedCity] = useState("서울");
-    const [selectedDistrict, setSelectedDistrict] = useState("강남구");
-    const [selectedNeighborhood, setSelectedNeighborhood] = useState("");
+    const [selectedGu, setSelectedGu] = useState("강남구");
+    const [selectedDong, setSelectedDong] = useState("");
   
     const handleCityClick = (city) => {
       setSelectedCity(city);
-      setSelectedDistrict("");
-      setSelectedNeighborhood("");
-      onRegionChange({ city, district: "", neighborhood: "" });
+      setSelectedGu("");
+      setSelectedDong("");
+      onRegionChange({ city, dong: "", gu: "" });
     };
   
-    const handleDistrictClick = (district) => {
-      setSelectedDistrict(district);
-      setSelectedNeighborhood("");
-      onRegionChange({ city: selectedCity, district, neighborhood: "" });
+    const handleGuClick = (gu) => {
+      setSelectedGu(gu);
+      setSelectedDong("");
+      onRegionChange({ city: selectedCity, gu, dong: "" });
     };
   
-    const handleNeighborhoodClick = (neighborhood) => {
-      setSelectedNeighborhood(neighborhood);
+    const handleDongClick = (dong) => {
+      setSelectedDong(dong);
       onRegionChange({
         city: selectedCity,
-        district: selectedDistrict,
-        neighborhood,
+        gu: selectedGu,
+        dong,
       });
     };
   
@@ -147,13 +147,13 @@ const regions = {
         {/* 구/군 */}
         <RegionColumn>
           {selectedCity &&
-            Object.keys(regions[selectedCity]).map((district) => (
+            Object.keys(regions[selectedCity]).map((gu) => (
               <RegionItem
-                key={district}
-                isSelected={selectedDistrict === district}
-                onClick={() => handleDistrictClick(district)}
+                key={gu}
+                isSelected={selectedGu === gu}
+                onClick={() => handleGuClick(gu)}
               >
-                {district}
+                {gu}
               </RegionItem>
             ))}
         </RegionColumn>
@@ -161,14 +161,14 @@ const regions = {
         {/* 동/리 */}
         <RegionColumn>
           {selectedCity &&
-            selectedDistrict &&
-            regions[selectedCity][selectedDistrict].map((neighborhood) => (
+            selectedGu &&
+            regions[selectedCity][selectedGu].map((dong) => (
               <RegionItem
-                key={neighborhood}
-                isSelected={selectedNeighborhood === neighborhood}
-                onClick={() => handleNeighborhoodClick(neighborhood)}
+                key={dong}
+                isSelected={selectedDong === dong}
+                onClick={() => handleDongClick(dong)}
               >
-                {neighborhood}
+                {dong}
               </RegionItem>
             ))}
         </RegionColumn>
