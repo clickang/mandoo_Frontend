@@ -135,7 +135,7 @@ const LoginRegister = () => {
       const { confirmPassword, ...dataToSend } = registerData;
       const response = await axios.post("/member/signup", dataToSend);
 
-      navigate("/login"); // 회원가입 성공 후 로그인 페이지로 리디렉션
+      navigate("/"); // 회원가입 성공 후 로그인 페이지로 리디렉션
     } catch (error) {
       if (error.response) {
         // 서버에서 반환한 에러

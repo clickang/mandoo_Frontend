@@ -4,7 +4,8 @@ import logo from "../images/logo.png";
 import { useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
 import axios from "axios";
-
+import { debounce } from 'lodash';
+import SearchLogic from "./SearchLogic";
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false); // 카테고리 열림/닫힘 상태
   const [isLogin, setIsLogin] = useState(false); // 로그인 상태
@@ -14,7 +15,7 @@ const Navbar = () => {
     nickname: "",
   }); // 사용자 정보
   const navigate = useNavigate();
-
+  const [keyword, setKeyword] = useState(""); // 검색어 상태 추가
   // 로컬스토리지에서 로그인 상태 가져오기
   useEffect(() => {
     const storedUser = localStorage.getItem("user");
@@ -56,6 +57,15 @@ const Navbar = () => {
       );
     }
   };
+  const handleSearchChange = (e) => {
+    setKeyword(e.target.value); // 입력값이 바뀔 때마다 상태 갱신
+  };
+
+  const handleSearchSubmit = (e) => {
+    if (e.key === 'Enter' && keyword.trim()) {
+      navigate(`/sellpost/search?keyword=${keyword}`); // 엔터 키 누르면 검색 실행
+    }
+  };
 
   return (
     <S.NavbarContainer>
@@ -63,7 +73,12 @@ const Navbar = () => {
         <Link to="/">
           <S.Logo src={logo} alt="만두마켓 로고" />
         </Link>
-        <S.SearchBar type="text" placeholder="어떤 물건을 찾으시나요?" />
+        <S.SearchBar type="text" 
+        placeholder="어떤 물건을 찾으시나요?"
+        value={keyword} 
+        onChange={handleSearchChange}
+        onKeyDown={handleSearchSubmit}
+        />
       </S.NavbarContainer2>
 
       <S.NavbarContainer2>
@@ -101,6 +116,7 @@ const Navbar = () => {
           </Link>
         </S.Menu>
       </S.NavbarContainer2>
+     {/* <SearchLogic keyword={keyword} /> */}
     </S.NavbarContainer>
   );
 };
