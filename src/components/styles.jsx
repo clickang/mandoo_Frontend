@@ -2,6 +2,7 @@ import styled from 'styled-components';
 import { NavLink } from 'react-router-dom';
 
 export const NavbarContainer = styled.div`
+  position: relative;
   display: flex;
   justify-content: space-between;
   flex-direction: column; /* 세로 방향으로 배치 */
@@ -10,6 +11,7 @@ export const NavbarContainer = styled.div`
   border-bottom: 1px solid #ddd;
 `;
 export const NavbarContainer2 = styled.div`
+  position: relative;
   display: flex;
   justify-content: center;
   flex-direction: row; /* 세로 방향으로 배치 */
@@ -66,8 +68,10 @@ export const MenuButton = styled.button`
 `;
 
 export const CategoryButton = styled.button`
-  padding: 5px 10px;
+ position: relative;
+  padding: 5px 15px;
   width:150px;
+  
   height:auto;
   background-color: #b09991;
   border: none;
@@ -83,12 +87,18 @@ export const CategoryButton = styled.button`
   }
 `;
 export const CategoryDropdown = styled.div`
-  display: ${(props) => (props.isOpen ? 'block' : 'none')}; /* isOpen이 true일 때만 보이게 설정 */
-  background-color: #f9f9f9;
-  border-radius: 4px;
-  margin-top: 5px;
-  padding: 5px 10px;
-  width: 200px;
+  position: absolute; /* 부모(CategoryButton)를 기준으로 위치 */
+  top: calc(100% + 0px); /* 버튼 바로 아래 여유 공간 */
+  left: 0; /* 왼쪽 정렬 */
+  background: white; /* 배경색 */
+  border: 1px solid #ddd; /* 테두리 */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* 그림자 효과 */
+  width: 200px; /* 너비 */
+  display: ${({ isOpen }) => (isOpen ? "block" : "none")}; /* 상태에 따른 표시 */
+  z-index: 1000; /* 다른 요소 위에 표시 */
+   
+
+
 `;
 
 export const CategoryItem = styled.div`
@@ -97,5 +107,114 @@ export const CategoryItem = styled.div`
 
   &:hover {
     background-color: #ddd;
+  }
+`;
+
+/*----------------------------------------------
+    Card.jsx에
+    대한 style
+  ----------------------------------------------
+*/
+// 카드 전체를 감싸는 컨테이너
+export const CardContainer = styled.div`
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  justify-content: center;
+  padding: 20px;
+`;
+
+// 개별 카드 스타일
+export const Card = styled.div`
+position: relative;
+  width: calc(33.333% - 20px); /* 한 줄에 3개, 간격 고려 */
+  background: #fff;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  display: flex;
+  flex-direction: column;
+  text-align: center;
+  transition: transform 0.2s;
+
+  &:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+  }
+  @media (max-width: 768px) {
+    width: calc(50% - 20px); /* 작은 화면에서는 2개씩 배치 */
+  }
+
+  @media (max-width: 480px) {
+    width: 100%; /* 더 작은 화면에서는 1개씩 배치 */
+  }
+`;
+
+// 이미지 스타일
+export const ImageWrapper = styled.div`
+position: relative;
+  width: 100%;
+  height: 200px;
+  overflow: hidden;
+
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+  }
+`;
+export const StyledHoverImage = styled.img`
+  width: 100%;
+  height: auto;
+  border-bottom: 1px solid #ddd; 
+  border-radius: 8px;
+  margin-top: 20px;
+  transition: filter 0.3s ease; /* 필터 변화를 부드럽게 */
+  display: inline-block;
+
+  &:hover {
+    filter: brightness(70%); /* 밝기를 70%로 낮춰서 어두운 효과 */
+  }
+`;
+// 제목 스타일
+export const Title = styled.h3`
+  font-size: 16px;
+  font-weight: bold;
+  margin: 10px 0;
+  color: #333;
+`;
+
+// 가격 스타일
+export const Price = styled.div`
+  font-size: 18px;
+  font-weight: bold;
+  color:  #777;
+`;
+
+// 지역 정보 스타일
+export const Location = styled.div`
+  font-size: 14px;
+  color: #777;
+  margin: 5px 0;
+`;
+
+// 상호작용 정보 (찜/댓글) 스타일
+export const Interaction = styled.div`
+  font-size: 12px;
+  color: #999;
+  margin-top: auto;
+  padding: 10px;
+  border-top: 1px solid #eee;
+`;
+export const LikeButton = styled.div`
+  position: absolute;
+  top: 8px; 
+  right: 8px;
+  cursor: pointer;
+
+  img {
+    width: 24px;
+    height: 24px;
   }
 `;
