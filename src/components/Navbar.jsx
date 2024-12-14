@@ -116,7 +116,6 @@ const Navbar = () => {
           </Link>
         </S.Menu>
       </S.NavbarContainer2>
-     {/* <SearchLogic keyword={keyword} /> */}
     </S.NavbarContainer>
   );
 };
