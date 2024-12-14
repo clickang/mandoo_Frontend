@@ -5,7 +5,9 @@ export const MyPageContainer = styled.nav`
   padding-right: 300px;
 `;
 
-export const SubContainer = styled.nav``;
+export const SubContainer = styled.nav`
+  padding: 50px;
+`;
 
 export const SellPostButtonContainer = styled.nav`
   display: flex;
@@ -37,4 +39,22 @@ export const ButtonContainer = styled.nav`
 
 export const SellPostCount = styled.div`
   font-size: 20px;
+  align-items: center;
+  justify-content: center;
+`;
+
+export const Footer = styled.img`
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: auto;
+  padding: 10px;
+`;
+
+export const CardContainer = styled.div`
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  padding: 20px;
 `;

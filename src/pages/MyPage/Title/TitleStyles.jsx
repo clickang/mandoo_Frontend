@@ -7,7 +7,7 @@ export const ProfileContainer = styled.nav`
   flex-direction: row;
   gap: 100px;
   margin-top: 50px;
-  margin-bottom: 15px;
+  padding: 50px;
 `;
 
 export const ProfileImg = styled.img`

@@ -1,10 +1,19 @@
 import React, { Fragment, useEffect, useMemo, useState } from "react";
 import axios from "axios";
 import { MenuList, MenuButton } from "./MenuStyles";
-export default function Menu() {
-  const [selected, setSelected] = useState(null);
+export default function Menu({ selected, setSelected, setGetURL }) {
   const handleClick = (index) => {
+    console.log("index: ", index);
     setSelected(index);
+    let url = "";
+    if (index === 0) {
+      url = "mypage/like";
+    } else if (index === 1) {
+      url = "mypage/selling";
+    } else if (index === 2) {
+      url = "mypage/sold";
+    }
+    setGetURL(url);
   };
 
   return (
