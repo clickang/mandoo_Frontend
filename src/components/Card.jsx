@@ -1,18 +1,20 @@
 import React from 'react';
 import * as S from './styles';
 import mandoo from '../images/mandoo_img.png';
-const Card = ({ post }) => {
-     // post.images가 배열일 경우 첫 번째 이미지의 파일명만 추출
-     let imagePath = mandoo;
+const Card = ({ post, onClick }) => {
+  // 기본 이미지 설정
+  let imagePath = mandoo;
 
   // post.images 배열에서 첫 번째 이미지 경로 가져오기
   const imageSrc = post.images && post.images[0];
 
-  // 이미지 경로가 존재하고, 문자열인 경우에만 처리
-  if (imageSrc && typeof imageSrc === 'string') {
-    // 전체 경로에서 파일명만 추출
-    const imageFileName = imageSrc.substring(imageSrc.lastIndexOf("\\") + 1);
-    //console.log("Extracted imageFileName: ", imageFileName); // 추출된 파일명을 확인
+  if (imageSrc && typeof imageSrc === "string") {
+    // 운영 체제에 따른 경로 구분자 설정
+    const pathSeparator = imageSrc.includes("\\") ? "\\" : "/";
+
+    // 파일명만 추출
+    const imageFileName = imageSrc.substring(imageSrc.lastIndexOf(pathSeparator) + 1);
+    console.log("Extracted imageFileName: ", imageFileName); // 디버그용 로그
 
     // 이미지 파일명으로 경로 설정
     imagePath = `../images/${imageFileName}`;
@@ -20,14 +22,14 @@ const Card = ({ post }) => {
    
   return (
     <S.Card>
-      <S.ImageWrapper>
+      <S.ImageWrapper onClick={onClick}>
       <img src={imagePath} alt={post.title} />
       </S.ImageWrapper>
       <S.Title>{post.title}</S.Title>
       <S.Price>{post.price}</S.Price>
       <S.Location>{post.location}</S.Location>
       <S.Interaction>
-        <span>만두 찜 {post.likes}</span> | <span>댓글 {post.comments}</span>
+        <span>만두 찜 {post.likes}</span>
       </S.Interaction>
     </S.Card>
   );
