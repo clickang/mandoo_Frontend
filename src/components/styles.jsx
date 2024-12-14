@@ -17,7 +17,7 @@ export const NavbarContainer2 = styled.div`
   flex-direction: row; /* 세로 방향으로 배치 */
   padding: 10px 20px;
   background-color: #fff;
-  border-bottom: 1px solid #ddd;
+  // border-bottom: 1px solid #ddd;
 `;
 export const Logo = styled.img`
   //padding-left:3%;
@@ -120,12 +120,12 @@ export const CardContainer = styled.div`
   display: flex;
   flex-wrap: wrap;
   gap: 20px;
-  justify-content: center;
   padding: 20px;
 `;
 
 // 개별 카드 스타일
 export const Card = styled.div`
+position: relative;
   width: calc(33.333% - 20px); /* 한 줄에 3개, 간격 고려 */
   background: #fff;
   border: 1px solid #ddd;
@@ -152,6 +152,7 @@ export const Card = styled.div`
 
 // 이미지 스타일
 export const ImageWrapper = styled.div`
+position: relative;
   width: 100%;
   height: 200px;
   overflow: hidden;
@@ -187,7 +188,7 @@ export const Title = styled.h3`
 export const Price = styled.div`
   font-size: 18px;
   font-weight: bold;
-  color: #ff5722;
+  color:  #777;
 `;
 
 // 지역 정보 스타일
@@ -204,4 +205,15 @@ export const Interaction = styled.div`
   margin-top: auto;
   padding: 10px;
   border-top: 1px solid #eee;
+`;
+export const LikeButton = styled.div`
+  position: absolute;
+  top: 8px; 
+  right: 8px;
+  cursor: pointer;
+
+  img {
+    width: 24px;
+    height: 24px;
+  }
 `;

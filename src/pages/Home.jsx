@@ -4,7 +4,7 @@ import banner from '../images/banner.png';
 import Card from '../components/Card';
 import * as S from '../components/styles.jsx';
 import { useEffect, useState } from "react";
-import useGetPosts from '../hooks/getPosts.js';
+
 import { ClipLoader } from "react-spinners";
 import { useGetInfinitePosts } from '../hooks/useGetInfinitePosts.js';
 import { useInView } from "react-intersection-observer";

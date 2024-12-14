@@ -140,7 +140,7 @@ const LoginRegister = () => {
       // status를 포함한 전송 데이터를 확인
       console.log("회원가입 요청 데이터:", dataToSend);
 
-      navigate("/login"); // 회원가입 성공 후 로그인 페이지로 리디렉션
+      navigate("/"); // 회원가입 성공 후 로그인 페이지로 리디렉션
     } catch (error) {
       if (error.response) {
         // 서버에서 반환한 에러
