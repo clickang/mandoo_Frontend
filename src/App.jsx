@@ -1,6 +1,7 @@
 import './App.css';
 import { BrowserRouter as Router, Routes, Route,useLocation } from "react-router-dom";
 import Navbar from './components/Navbar';
+
 import Home from "./pages/Home";
 import Login from "./pages/Login/Login";
 import Write from "./pages/Sellpost/WriteComponent";
@@ -12,6 +13,9 @@ import ReportPage from "./pages/Manage/Report";
 import DashBoardPage from "./pages/Manage/DashBoard";
 import MyPage from "./pages/MyPage/MyPage";
 import { Fragment } from "react";
+import Write from './pages/Sellpost/WriteComponent'
+import Read from "./pages/SellpostView/ReadComponent"; // 게시물 세부 정보
+
 
 // QueryClient 생성
 const queryClient = new QueryClient();
@@ -39,7 +43,6 @@ function AppWithRouter() {
       {location.pathname && !location.pathname.startsWith("/manage") && (
         <Navbar />
       )}
-
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/login" element={<Login />} />
@@ -50,8 +53,12 @@ function AppWithRouter() {
         <Route path="/manage/dashboard" element={<DashBoardPage />} />
         <Route path="/manage/member" element={<MemberPage />} />
         <Route path="/manage/report" element={<ReportPage />} />
+          <Route path="/sellpost/write" element={<Write />} />
+          <Route path="/sellpost/read/:sellPostId" element={<Read />} />
       </Routes>
     </>
+
+
   );
 }
 

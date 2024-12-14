@@ -84,7 +84,7 @@ const LoginRegister = () => {
     email: "",
     password: "",
     nickname: "",
-    status: "",
+    status: "user",
     confirmPassword: "",
   });
 
@@ -109,6 +109,7 @@ const LoginRegister = () => {
           })
         );
         navigate("/");
+        window.location.reload();
       } // 로그인 성공 후 리디렉션
     } catch (error) {
       if (error.response) {
@@ -134,6 +135,10 @@ const LoginRegister = () => {
     try {
       const { confirmPassword, ...dataToSend } = registerData;
       const response = await axios.post("/member/signup", dataToSend);
+      localStorage.setItem("memberId", response.data.memberId);
+
+      // status를 포함한 전송 데이터를 확인
+      console.log("회원가입 요청 데이터:", dataToSend);
 
       navigate("/"); // 회원가입 성공 후 로그인 페이지로 리디렉션
     } catch (error) {

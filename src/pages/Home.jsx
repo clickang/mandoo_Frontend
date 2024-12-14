@@ -8,6 +8,7 @@ import { useEffect, useState } from "react";
 import { ClipLoader } from "react-spinners";
 import { useGetInfinitePosts } from '../hooks/useGetInfinitePosts.js';
 import { useInView } from "react-intersection-observer";
+import { useNavigate } from "react-router-dom";
 const Home = () => {
   const {data :posts,
     isLoading, 
@@ -24,6 +25,7 @@ const Home = () => {
     console.log("Posts data:", posts);  // 받아온 posts 데이터를 출력
   }, [posts]);
 
+  const navigate = useNavigate();
   const {ref,inView}=useInView({
     threshold:0,
   })
@@ -61,7 +63,9 @@ const Home = () => {
       <S.CardContainer>
       {posts?.pages.map((page) => {
         return page.result.content.map((post,_) => (
-          <Card key={post.sellPostId} post={post} />
+            <Card key={post.sellPostId} post={post}
+            onClick={() => navigate(`/sellpost/read/${post.sellPostId}`)}
+             />
         ));
       })}
       </S.CardContainer>
