@@ -1,11 +1,13 @@
 import styled from "styled-components";
 
 // 전체 컨테이너
-export const Container = styled.nav`
+export const Container = styled.div`
   max-width: 1500px;
   min-width: 800px;
   margin: 0 auto;
   padding: 20px;
+  background-color: #ffffff;
+  border-radius: 10px;
   padding-left: 300px;
   padding-right: 300px;
 `;
@@ -66,7 +68,7 @@ export const Button = styled.button`
   padding: 10px;
   font-size: 16px;
   font-weight: bold;
-  color: #FFF;
+  color: #fff;
   background-color: #b09991;
   border: none;
   border-radius: 5px;
@@ -126,7 +128,6 @@ export const CategoryButton = styled.button`
   }
 `;
 
-
 // Checkbox 컨테이너
 export const CheckboxContainer = styled.div`
   display: flex;
@@ -157,10 +158,12 @@ export const TextCount = styled.div`
 `;
 
 export const ButtonWrapper = styled.div`
-  display: flex;
-  justify-content: flex-end; /* 오른쪽 정렬 */
-  margin-top: 20px;
+  display: flex; /* Flexbox 적용 */
+  justify-content: flex-end; /* 우측 정렬 */
+  gap: 10px; /* 버튼 간의 간격 설정 */
+  margin-top: 20px; /* 위쪽 여백 */
 `;
+
 
 // 지역 선택 관련 스타일
 export const RegionContainer = styled.div`

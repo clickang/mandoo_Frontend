@@ -11,7 +11,7 @@ import {
   Title,
   ImageWrapper,
 } from "./MyCardStyles";
-
+import { useNavigate } from "react-router-dom";
 const MyCard = ({
   post,
   selectedCardId,
@@ -23,12 +23,12 @@ const MyCard = ({
   const [isLiked, setIsLiked] = useState(false);
   const [isDelActive, setDelActive] = useState(false);
   const [isUpdateActive, setUpdateActive] = useState(false);
-
+  const navigate = useNavigate();
   // post.images가 배열일 경우 첫 번째 이미지의 파일명만 추출
   let imagePath = mandoo;
 
   // post.images 배열에서 첫 번째 이미지 경로 가져오기
-  const imageSrc = post.images && post.images[0];
+  const imageSrc = post.images;
 
   // 이미지 경로가 존재하고, 문자열인 경우에만 처리
   if (imageSrc && typeof imageSrc === "string") {
@@ -50,13 +50,16 @@ const MyCard = ({
   const imageStyle = post.status === 1 ? { filter: "blur(5px)" } : {}; // 거래완료일 때 블러 처리
 
   const handleCardClick = (id) => {
-    setSelectedCardId(id); // 클릭된 Card의 ID를 상태로 업데이트
-    console.log("CardId: ", selectedCardId);
+    // setSelectedCardId(id); // 클릭된 Card의 ID를 상태로 업데이트
+    if (!isDelActive && !isUpdateActive) {
+      navigate(`/sellpost/read/${selectedCardId}`);
+    }
   };
 
   useEffect(() => {
     setIsLiked(LikeExist);
-  }, [LikeExist]);
+    setSelectedCardId(post.sellPostId);
+  }, [LikeExist, post.sellPostId]);
 
   useEffect(() => {
     setDelActive(delButtonAcitve);
