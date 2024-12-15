@@ -1,7 +1,8 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import ImageUpload from "./ImageUpload/ImageUpload";
 import RegionSelect from "./RegionSelect/RegionSelect";
-import { useNavigate } from "react-router-dom"; // useNavigate 가져오기
+import { useParams, useNavigate } from "react-router-dom"; // useParams 추가
+import axios from "axios";
 import {
   Container,
   Form,
@@ -21,9 +22,10 @@ import {
   ButtonWrapper,
 } from "./styles";
 
-import axios from "axios";
+export default function EditComponent() {
+  const { sellPostId } = useParams(); // 게시글 ID 가져오기
+  const navigate = useNavigate();
 
-export default function WriteComponent() {
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
   const [uploadedImages, setUploadedImages] = useState([]); // 업로드된 이미지 상태
@@ -34,10 +36,11 @@ export default function WriteComponent() {
     delivery: false,
     direct: false,
   }); // 거래 방법 상태
-
-  const handleImageUpload = (images) => {
-    setUploadedImages(images); // 이미지 리스트 업데이트
-  };
+  const [region, setRegion] = useState({
+    city: "",
+    gu: "",
+    dong: "",
+  });
 
   const categories = [
     { id: 1, name: "수입 명품" },
@@ -50,6 +53,42 @@ export default function WriteComponent() {
     { id: 8, name: "도서/음반/문류" },
     { id: 9, name: "노트북/PC" },
   ];
+
+  // 게시글 데이터 로드
+  useEffect(() => {
+    const fetchPost = async () => {
+      try {
+        const response = await axios.get(`/sellpost/read/${sellPostId}`);
+        const postData = response.data.result;
+
+        // 폼 필드 채우기
+        setTitle(postData.title);
+        setContent(postData.description);
+        setPrice(postData.price === "무료 나눔" ? "" : postData.price);
+        setIsFree(postData.price === "무료 나눔");
+        setSelectedCategories(postData.categories.map((category) => category.id));
+        setTransactionMethods({
+          delivery: postData.transactionMethods.includes("delivery"),
+          direct: postData.transactionMethods.includes("direct"),
+        });
+        setRegion({
+          city: postData.city,
+          gu: postData.gu,
+          dong: postData.dong,
+        });
+        setUploadedImages(postData.images || []); // 기존 이미지를 초기 값으로 설정
+      } catch (error) {
+        console.error("게시글 로드 중 오류 발생:", error);
+        alert("게시글 정보를 불러오는 데 실패했습니다.");
+      }
+    };
+
+    fetchPost();
+  }, [sellPostId]);
+
+  const handleImageUpload = (images) => {
+    setUploadedImages(images); // 이미지 리스트 업데이트
+  };
 
   const handleCategoryClick = (categoryId) => {
     setSelectedCategories((prev) =>
@@ -65,96 +104,79 @@ export default function WriteComponent() {
       [method]: !prev[method],
     }));
   };
-  const [region, setRegion] = useState({
-    city: "",
-    gu: "",
-    dong: "",
-  });
 
   const handleRegionChange = (region) => {
-    console.log("선택된 지역:", region);
     setRegion(region);
   };
 
-  
-
-  const navigate = useNavigate();
   const handleSubmit = async (e) => {
     e.preventDefault();
-
-    // 유효성 검사
+  
     if (!title.trim()) {
       alert("제목을 입력해 주세요!");
       return;
     }
-
+  
     if (selectedCategories.length === 0) {
       alert("카테고리를 선택해 주세요!");
       return;
     }
-
+  
     if (!content.trim()) {
       alert("내용을 입력해 주세요!");
       return;
     }
-
-    // 게시물 데이터 객체
+  
     if (!region.city || !region.gu || !region.dong) {
-        alert("지역을 선택해 주세요!");
-        return;
-      }
-
-      const storedUser = localStorage.getItem("user"); 
-      const parsedUser = JSON.parse(storedUser); // JSON 문자열을 객체로 변환
-      const memberId = parsedUser.memberId; // memberId 가져오기
-      if (!memberId) {
-        alert("로그인이 필요합니다!"); 
-      }
-      console.log("멤버 ID:", memberId);
-      console.log("선택된 지역:", region);
-      
-      const formData = new FormData();
-      formData.append("title", title);
-      formData.append("description", content);
-      formData.append("price", isFree ? "무료 나눔" : price);
-      formData.append("city", region.city); // city 추가
-      formData.append("gu", region.gu);     // gu 추가
-      formData.append("dong", region.dong); // dong 추가
-      formData.append("memberId", memberId); // 멤버 ID 추가
-
-       // 카테고리 아이디를 FormData에 추가
-      selectedCategories.forEach((categoryId) =>
-        formData.append("categoryIds[]", categoryId)
-      );
-      Object.keys(transactionMethods)
-        .filter((method) => transactionMethods[method])
-        .forEach((method) => formData.append("transactionMethods[]", method));
-      uploadedImages.forEach((image) => formData.append("images", image)); // 이미지 추가
-
-      console.log("FormData 내용:");
-      for (const [key, value] of formData.entries()) {
-        console.log(`${key}:`, value);
-      }
-    
-      try {
-        const response = await axios.post("/sellpost/write", formData, {
-          headers: {
-            "Content-Type": "multipart/form-data",
-          },
-        });
-        console.log("서버 응답 데이터:", response.data);
-        alert("게시물이 성공적으로 등록되었습니다!");
-        navigate("/"); // '/'는 홈 화면 경로 (필요에 따라 변경 가능)
-      } catch (error) {
-        console.error("게시물 등록 중 오류 발생:", error);
-        alert("게시물 등록에 실패했습니다. 다시 시도해 주세요.");
-      }
-      
-    };
-
+      alert("지역을 선택해 주세요!");
+      return;
+    }
+  
+    // undefined 값 필터링
+    const validCategoryIds = selectedCategories.filter(
+      (categoryId) => categoryId !== undefined
+    );
+  
+    const formData = new FormData();
+    formData.append("title", title);
+    formData.append("description", content);
+    formData.append("price", isFree ? "무료 나눔" : price);
+    formData.append("city", region.city);
+    formData.append("gu", region.gu);
+    formData.append("dong", region.dong);
+  
+    // 유효한 카테고리만 추가
+    validCategoryIds.forEach((categoryId) =>
+      formData.append("categoryIds[]", categoryId)
+    );
+  
+    // 거래 방법 추가
+    Object.keys(transactionMethods)
+      .filter((method) => transactionMethods[method])
+      .forEach((method) => formData.append("transactionMethods[]", method));
+  
+    // 이미지 추가
+    uploadedImages.forEach((image) => formData.append("images", image));
+  
+    try {
+      const response = await axios.put(`/sellpost/update/${sellPostId}`, formData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      });
+  
+      console.log("수정된 게시물:", response.data);
+      alert("게시물이 성공적으로 수정되었습니다!");
+      navigate(`/sellpost/read/${sellPostId}`);
+    } catch (error) {
+      console.error("게시글 수정 중 오류 발생:", error);
+      alert("게시글 수정에 실패했습니다.");
+    }
+  };
+  
   return (
     <Container>
-      <Header>상품 등록</Header>
+      <Header>게시글 수정</Header>
       <Divider />
 
       <Form onSubmit={handleSubmit}>
@@ -164,7 +186,7 @@ export default function WriteComponent() {
             <p>상품 이미지</p>
             <p>({uploadedImages.length}/12)</p>
           </Label>
-          <ImageUpload onImageChange={handleImageUpload} />
+          <ImageUpload onImageChange={handleImageUpload} uploadedImages={uploadedImages} />
         </HorizontalField>
 
         {/* 제목 입력 */}
@@ -194,13 +216,12 @@ export default function WriteComponent() {
               </CategoryButton>
             ))}
           </CategoryContainer>
-
         </HorizontalField>
 
         {/* 지역 선택 */}
         <HorizontalField>
           <Label>지역</Label>
-          <RegionSelect onRegionChange={handleRegionChange} />
+          <RegionSelect onRegionChange={handleRegionChange} selectedRegion={region} />
         </HorizontalField>
 
         {/* 판매 가격 */}
@@ -260,7 +281,7 @@ export default function WriteComponent() {
 
         {/* 제출 버튼 */}
         <ButtonWrapper>
-            <Button>등록</Button>
+          <Button>수정 완료</Button>
         </ButtonWrapper>
       </Form>
     </Container>

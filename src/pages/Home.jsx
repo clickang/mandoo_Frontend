@@ -8,7 +8,10 @@ import { useEffect, useState, navigate } from "react";
 import { ClipLoader } from "react-spinners";
 import { useGetInfinitePosts } from "../hooks/useGetInfinitePosts.js";
 import { useInView } from "react-intersection-observer";
+
 import { Banner, HomePage, SectionTitle } from "./HomeStyles.jsx";
+import { useNavigate } from "react-router-dom";
+
 const Home = () => {
   const {
     data: posts,
@@ -26,6 +29,7 @@ const Home = () => {
     console.log("Posts data:", posts); // 받아온 posts 데이터를 출력
   }, [posts]);
 
+
   const { ref, inView } = useInView({
     threshold: 0,
   });
@@ -36,6 +40,9 @@ const Home = () => {
       !isFetching && hasNextPage && fetchNextPage();
     }
   }, [inView, isFetching, hasNextPage, fetchNextPage]);
+
+  const navigate = useNavigate();
+
 
   useEffect(() => {
     console.log("hasNextPage:", hasNextPage); // hasNextPage 값 로그
@@ -58,24 +65,21 @@ const Home = () => {
           중고 거래 인기 매물
         </SectionTitle>
         <>
-          <S.CardContainer>
-            {posts?.pages.map((page) => {
-              return page.result.content.map((post, _) => (
-                <Card key={post.sellPostId} post={post} />
-              ));
-            })}
-          </S.CardContainer>
-          <div
-            style={{
-              height: "50px",
-              marginTop: "50px",
-              display: "flex",
-              justifyContent: "center",
-              width: "100%",
-            }}
-            ref={ref}
-          >
-            {isFetching && <ClipLoader />}
+
+      <S.CardContainer>
+      {posts?.pages.map((page) => {
+        return page.result.content.map((post,_) => (
+            <Card key={post.sellPostId} post={post}
+            onClick={() => {
+              console.log(`Navigating to /sellpost/read/${post.sellPostId}`);
+              navigate(`/sellpost/read/${post.sellPostId}`)}}
+             />
+        ));
+      })}
+      </S.CardContainer>
+        <div style={{height:'50px',marginTop:'50px', display:"flex", justifyContent:'center',width:'100%'}}ref={ref}>
+          {isFetching && <ClipLoader/>}
+
           </div>
         </>
       </HomePage>

@@ -3,6 +3,9 @@ import axios from "axios";
 import Title from "./Title/Title";
 import Menu from "./Menu/Menu";
 import MyCard from "./MyCard/MyCard.jsx";
+
+import { useNavigate } from "react-router-dom";
+
 import { ClipLoader } from "react-spinners";
 import {
   ButtonContainer,
@@ -77,8 +80,12 @@ const MyPage = () => {
     }
   };
 
+  const navigate = useNavigate();
   const updateButtonClick = async () => {
     if (updateButtonActive) {
+      if (selectedCardId) {
+        navigate(`/sellpost/update/${selectedCardId}`);
+      }
     } else {
       setUpdateButtonContent("선택 ");
       setUpdateButtonActive(true);
@@ -97,10 +104,12 @@ const MyPage = () => {
     }
   };
 
+
   const UpdateData = async (sellPostId) => {};
   const storedUser = localStorage.getItem("user");
   const parsedUser = JSON.parse(storedUser); // JSON 문자열을 객체로 변환
   console.log(parsedUser);
+
   return (
     <Fragment>
       <MyPageContainer>
