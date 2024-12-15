@@ -2,6 +2,7 @@ import { useInfiniteQuery } from "@tanstack/react-query";
 import axios from "axios";
 
 const getPosts = async ({ pageParam, memberId, url }) => {
+  console.log(url);
   const { data } = await axios.get(url, {
     params: {
       memberId: memberId, // 쿼리 파라미터로 memberId 전달

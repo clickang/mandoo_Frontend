@@ -12,6 +12,7 @@ import ReportPage from "./pages/Manage/Report";
 import DashBoardPage from "./pages/Manage/DashBoard";
 import MyPage from "./pages/MyPage/MyPage";
 import { Fragment } from "react";
+import Footer from "./components/Footer";
 
 // QueryClient 생성
 const queryClient = new QueryClient();
@@ -51,6 +52,10 @@ function AppWithRouter() {
         <Route path="/manage/member" element={<MemberPage />} />
         <Route path="/manage/report" element={<ReportPage />} />
       </Routes>
+
+      {location.pathname && !location.pathname.startsWith("/manage") && (
+        <Footer />
+      )}
     </>
   );
 }

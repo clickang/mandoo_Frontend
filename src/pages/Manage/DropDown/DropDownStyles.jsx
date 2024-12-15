@@ -24,7 +24,7 @@ export const DropButtonList = styled.ul`
   flex-direction: column; /* 세로 정렬을 위해 추가 */
   box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);
   position: absolute; /* 부모(ButtonContainer) 기준 위치 */
-  top: 20px; /* MainButton 바로 아래로 배치 */
+  top: 20px;
 `;
 
 export const MainButton = styled.div`
@@ -37,7 +37,7 @@ export const MainButton = styled.div`
   font-size: 10px;
   display: flex;
   justify-content: center;
-  align-items: center; /* 요소를 수직 가운데 정렬 */
+  align-items: center;
   flex-direction: column; /* 세로 정렬을 위해 추가 */
   box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);
 `;

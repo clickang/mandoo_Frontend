@@ -6,8 +6,9 @@ export const ProfileContainer = styled.nav`
   align-items: center; /* 요소를 수직 가운데 정렬 */
   flex-direction: row;
   gap: 100px;
-  margin-top: 50px;
+  margin-top: 30px;
   padding: 50px;
+  padding-bottom: 10px;
 `;
 
 export const ProfileImg = styled.img`
@@ -27,7 +28,7 @@ export const TitleContainer = styled.ul`
 export const Title = styled.li`
   list-style-type: none;
   font-weight: bold; /* 글씨를 굵게 */
-  font-size: 25px;
+  font-size: 35px;
 `;
 
 export const MiniTitleContainer = styled.ul`

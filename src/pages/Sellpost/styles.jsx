@@ -1,14 +1,13 @@
 import styled from "styled-components";
 
 // 전체 컨테이너
-export const Container = styled.div`
+export const Container = styled.nav`
   max-width: 1500px;
   min-width: 800px;
   margin: 0 auto;
   padding: 20px;
-  background-color: #ffffff;
-  border-radius: 10px;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  padding-left: 300px;
+  padding-right: 300px;
 `;
 
 // 헤더

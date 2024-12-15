@@ -1,10 +1,10 @@
-import React, { useEffect, useState } from "react";
+import React, { Fragment, useEffect, useState } from "react";
 import * as S from "./styles";
 import logo from "../images/logo.png";
 import { useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
 import axios from "axios";
-import { debounce } from 'lodash';
+import { debounce } from "lodash";
 import SearchLogic from "./SearchLogic";
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false); // 카테고리 열림/닫힘 상태
@@ -29,10 +29,10 @@ const Navbar = () => {
     }
   }, []); // 컴포넌트가 처음 마운트될 때 한 번만 실행
 
-  const toggleDropdown = () => {
-    setIsOpen((prev) => !prev); // 기존 상태를 반전시켜서 토글
-    console.log("isOpen?" ,isOpen);
-  };
+  // const toggleDropdown = () => {
+  //   setIsOpen((prev) => !prev); // 기존 상태를 반전시켜서 토글
+  //   console.log("isOpen?" ,isOpen);
+  // };
 
   const handleLogout = async () => {
     try {
@@ -62,7 +62,7 @@ const Navbar = () => {
   };
 
   const handleSearchSubmit = (e) => {
-    if (e.key === 'Enter' && keyword.trim()) {
+    if (e.key === "Enter" && keyword.trim()) {
       navigate(`/sellpost/search?keyword=${keyword}`); // 엔터 키 누르면 검색 실행
     }
   };
@@ -73,30 +73,27 @@ const Navbar = () => {
         <Link to="/">
           <S.Logo src={logo} alt="만두마켓 로고" />
         </Link>
-        <S.SearchBar type="text" 
-        placeholder="어떤 물건을 찾으시나요?"
-        value={keyword} 
-        onChange={handleSearchChange}
-        onKeyDown={handleSearchSubmit}
+        <S.SearchBar
+          type="text"
+          placeholder="어떤 물건을 찾으시나요?"
+          value={keyword}
+          onChange={handleSearchChange}
+          onKeyDown={handleSearchSubmit}
         />
       </S.NavbarContainer2>
 
-      <S.NavbarContainer2>
-        <S.CategoryButton onClick={toggleDropdown}>
-          <i className="fas fa-bars icon"></i>
-          카테고리
-        </S.CategoryButton>
-        <S.CategoryDropdown isOpen={isOpen}>
-        <S.CategoryItem>수입 명품</S.CategoryItem>
-          <S.CategoryItem>패션/의류</S.CategoryItem>
-          <S.CategoryItem>뷰티</S.CategoryItem>
-          <S.CategoryItem>출산/유아동</S.CategoryItem>
-          <S.CategoryItem>가전제품</S.CategoryItem>
-          <S.CategoryItem>카메라/캠코더</S.CategoryItem>
-          <S.CategoryItem>모바일/탭플릿</S.CategoryItem>
-          <S.CategoryItem>도서/음반/분류</S.CategoryItem>
-          <S.CategoryItem>노트북/PC</S.CategoryItem>
-        </S.CategoryDropdown>
+      <S.NavbarContainer3>
+        <S.Category>
+          <S.CategoryButton
+            onClick={() => {
+              setIsOpen(!isOpen);
+            }}
+          >
+            <i className="fas fa-bars icon"></i>
+            카테고리
+          </S.CategoryButton>
+          {isOpen && <Dropdown />}
+        </S.Category>
         <S.Menu>
           {!isLogin ? (
             <Link to="/login">
@@ -115,9 +112,27 @@ const Navbar = () => {
             <S.MenuButton>마이페이지</S.MenuButton>
           </Link>
         </S.Menu>
-      </S.NavbarContainer2>
+      </S.NavbarContainer3>
     </S.NavbarContainer>
   );
 };
+
+function Dropdown() {
+  return (
+    <Fragment>
+      <S.CategoryDropdown>
+        <S.CategoryItem>수입 명품</S.CategoryItem>
+        <S.CategoryItem>패션/의류</S.CategoryItem>
+        <S.CategoryItem>뷰티</S.CategoryItem>
+        <S.CategoryItem>출산/유아동</S.CategoryItem>
+        <S.CategoryItem>가전제품</S.CategoryItem>
+        <S.CategoryItem>카메라/캠코더</S.CategoryItem>
+        <S.CategoryItem>모바일/탭플릿</S.CategoryItem>
+        <S.CategoryItem>도서/음반/분류</S.CategoryItem>
+        <S.CategoryItem>노트북/PC</S.CategoryItem>
+      </S.CategoryDropdown>
+    </Fragment>
+  );
+}
 
 export default Navbar;
