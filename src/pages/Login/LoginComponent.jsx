@@ -108,7 +108,11 @@ const LoginRegister = () => {
             isLogin: true,
           })
         );
-        navigate("/");
+        if (response.data.result?.status == 1) {
+          navigate("/manage/dashboard");
+        } else {
+          navigate("/");
+        }
         window.location.reload();
       } // 로그인 성공 후 리디렉션
     } catch (error) {

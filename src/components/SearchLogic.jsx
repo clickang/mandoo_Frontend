@@ -6,10 +6,11 @@ import Card from "./Card";
 import * as S from "./styles";
 import { useInView } from "react-intersection-observer";
 import { useLocation } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 const SearchLogic = () => {
   const location = useLocation();
   const keyword = new URLSearchParams(location.search).get("keyword");
-  console.log("keyword: ", keyword);
+  const navigate = useNavigate();
   const {
     data: posts,
     isLoading,
@@ -47,13 +48,20 @@ const SearchLogic = () => {
   if (isError) {
     return <h2>Error: {error.message}</h2>;
   }
+
   return (
     <Fragment>
       <S.SearchPage>
         <S.CardContainer>
           {posts?.pages.map((page) => {
             return page.result.content.map((post, _) => (
-              <Card key={post.sellPostId} post={post} />
+              <Card
+                key={post.sellPostId}
+                post={post}
+                onClick={() => {
+                  navigate(`/sellpost/read/${post.sellPostId}`);
+                }}
+              />
             ));
           })}
         </S.CardContainer>

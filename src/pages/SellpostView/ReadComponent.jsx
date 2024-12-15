@@ -38,11 +38,15 @@ const ReadComponent = () => {
 
   let imagePath = mandoo;
 
-  const imageSrc = post.images && post.images[0];
+  const imageSrc = post.images;
+  console.log(typeof imageSrc);
   if (imageSrc && typeof imageSrc === "string") {
     const pathSeparator = imageSrc.includes("\\") ? "\\" : "/";
-    const imageFileName = imageSrc.substring(imageSrc.lastIndexOf(pathSeparator) + 1);
+    const imageFileName = imageSrc.substring(
+      imageSrc.lastIndexOf(pathSeparator) + 1
+    );
     imagePath = `../../images/${imageFileName}`;
+    console.log("imagePath : ", imageFileName);
   }
 
   const storedUser = localStorage.getItem("user");

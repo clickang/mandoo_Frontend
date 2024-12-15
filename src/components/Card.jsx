@@ -12,23 +12,22 @@ const Card = ({ post, onClick }) => {
   // post.images가 배열일 경우 첫 번째 이미지의 파일명만 추출
   let imagePath = mandoo;
 
-
   // post.images 배열에서 첫 번째 이미지 경로 가져오기
-  const imageSrc = post.images && post.images[0];
+  // const imageSrc = post.images && post.images[0];
+  const imageSrc = post.images;
 
   const storedUser = localStorage.getItem("user");
   const parsedUser = JSON.parse(storedUser); // JSON 문자열을 객체로 변환
   const memberId = parsedUser?.memberId || null; // memberId 가져오기
 
-
   if (imageSrc && typeof imageSrc === "string") {
     // 운영 체제에 따른 경로 구분자 설정
     const pathSeparator = imageSrc.includes("\\") ? "\\" : "/";
-
     // 파일명만 추출
-    const imageFileName = imageSrc.substring(imageSrc.lastIndexOf(pathSeparator) + 1);
+    const imageFileName = imageSrc.substring(
+      imageSrc.lastIndexOf(pathSeparator) + 1
+    );
     console.log("Extracted imageFileName: ", imageFileName); // 디버그용 로그
-
 
     // 이미지 파일명으로 경로 설정
     imagePath = `../images/${imageFileName}`;
@@ -73,7 +72,6 @@ const Card = ({ post, onClick }) => {
             alt="like button"
           />
         </S.LikeButton>
-
       </S.ImageWrapper>
       <S.Title>{post.title}</S.Title>
       <S.Price>{post.price}</S.Price>
@@ -81,8 +79,7 @@ const Card = ({ post, onClick }) => {
         {post.city} | {post.gu} | {post.dong}
       </S.Location>
       <S.Interaction>
-       <span>{statusText}</span> {/* 거래중/거래완료 텍스트 출력 */}
-
+        <span>{statusText}</span> {/* 거래중/거래완료 텍스트 출력 */}
       </S.Interaction>
     </S.Card>
   );

@@ -84,6 +84,7 @@ const MyPage = () => {
   const updateButtonClick = async () => {
     if (updateButtonActive) {
       if (selectedCardId) {
+        console.log(selectedCardId);
         navigate(`/sellpost/update/${selectedCardId}`);
       }
     } else {
