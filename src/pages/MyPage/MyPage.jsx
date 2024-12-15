@@ -4,6 +4,7 @@ import Title from "./Title/Title";
 import Menu from "./Menu/Menu";
 import MyCard from "./MyCard/MyCard.jsx";
 import footer from "../../images/footer.png";
+import { useNavigate } from "react-router-dom";
 import { ClipLoader } from "react-spinners";
 import {
   ButtonContainer,
@@ -78,8 +79,12 @@ const MyPage = () => {
     }
   };
 
+  const navigate = useNavigate();
   const updateButtonClick = async () => {
     if (updateButtonActive) {
+      if (selectedCardId) {
+        navigate(`/sellpost/update/${selectedCardId}`);
+      }
     } else {
       setUpdateButtonContent("선택 완료");
       setUpdateButtonActive(true);
@@ -98,7 +103,9 @@ const MyPage = () => {
     }
   };
 
-  const UpdateData = async (sellPostId) => {};
+  const UpdateData = async (sellPostId) => {
+    
+  };
 
   return (
     <Fragment>
@@ -117,7 +124,7 @@ const MyPage = () => {
                 {delButtonContent}
               </SellPostButton>
               <SellPostButton onClick={() => updateButtonClick()}>
-                게시글 수정
+                {updateButtonContent}
               </SellPostButton>
             </SellPostButtonContainer>
           </ButtonContainer>
