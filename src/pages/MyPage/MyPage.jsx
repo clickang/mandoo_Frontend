@@ -3,8 +3,9 @@ import axios from "axios";
 import Title from "./Title/Title";
 import Menu from "./Menu/Menu";
 import MyCard from "./MyCard/MyCard.jsx";
-import footer from "../../images/footer.png";
+
 import { useNavigate } from "react-router-dom";
+
 import { ClipLoader } from "react-spinners";
 import {
   ButtonContainer,
@@ -20,6 +21,7 @@ import { useGetMyPosts } from "../../hooks/useGetMyPosts.js";
 import { useInView } from "react-intersection-observer";
 
 const MyPage = () => {
+  const [Liked, setLiked] = useState(true);
   const [getURL, setGetURL] = useState("/mypage/like");
   const [selected, setSelected] = useState(0);
   const [selectedCardId, setSelectedCardId] = useState(null);
@@ -38,8 +40,6 @@ const MyPage = () => {
     error,
     isError,
   } = useGetMyPosts(getURL);
-
-  //   useEffect(() => {}, [posts]);
 
   useEffect(() => {
     if (getURL) {
@@ -65,6 +65,7 @@ const MyPage = () => {
           await DeleteData(selectedCardId); // 데이터를 삭제하는 fetchData 호출
           alert("삭제되었습니다."); // 성공 알림 표시
           setSelectedCardId(null); // 삭제 후 선택된 카드 초기화
+          window.location.reload();
         } catch (error) {
           alert("삭제에 실패했습니다. 다시 시도해주세요."); // 실패 알림 표시
           console.error("삭제 오류:", error);
@@ -86,7 +87,7 @@ const MyPage = () => {
         navigate(`/sellpost/update/${selectedCardId}`);
       }
     } else {
-      setUpdateButtonContent("선택 완료");
+      setUpdateButtonContent("선택 ");
       setUpdateButtonActive(true);
     }
   };
@@ -103,22 +104,29 @@ const MyPage = () => {
     }
   };
 
-  const UpdateData = async (sellPostId) => {
-    
-  };
+
+  const UpdateData = async (sellPostId) => {};
+  const storedUser = localStorage.getItem("user");
+  const parsedUser = JSON.parse(storedUser); // JSON 문자열을 객체로 변환
+  console.log(parsedUser);
 
   return (
     <Fragment>
       <MyPageContainer>
-        <Title />
+        <Title nickname={parsedUser?.nickname || null} />
         <SubContainer>
           <Menu
             selected={selected}
             setSelected={setSelected}
             setGetURL={setGetURL}
+            setLiked={setLiked}
           />
           <ButtonContainer>
-            <SellPostCount>총1개</SellPostCount>
+            <SellPostCount>
+              총
+              {posts?.pages.reduce((acc, page) => acc + page.result.length, 0)}
+              개
+            </SellPostCount>
             <SellPostButtonContainer>
               <SellPostButton onClick={() => delButtonClick()}>
                 {delButtonContent}
@@ -138,12 +146,12 @@ const MyPage = () => {
                   setSelectedCardId={setSelectedCardId}
                   delButtonAcitve={delButtonActive}
                   updateButtonActive={updateButtonActive}
+                  LikeExist={Liked}
                 />
               ));
             })}
           </CardContainer>
         </SubContainer>
-        <Footer src={footer} alt="foot_img" />
       </MyPageContainer>
     </Fragment>
   );

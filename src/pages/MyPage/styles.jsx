@@ -43,15 +43,6 @@ export const SellPostCount = styled.div`
   justify-content: center;
 `;
 
-export const Footer = styled.img`
-  width: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  height: auto;
-  padding: 10px;
-`;
-
 export const CardContainer = styled.div`
   display: flex;
   flex-wrap: wrap;

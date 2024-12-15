@@ -13,6 +13,7 @@ import ReportPage from "./pages/Manage/Report";
 import DashBoardPage from "./pages/Manage/DashBoard";
 import MyPage from "./pages/MyPage/MyPage";
 import { Fragment } from "react";
+import Footer from "./components/Footer";
 import Read from "./pages/SellpostView/ReadComponent"; // 게시물 세부 정보
 import Update from "./pages/Sellpost/UpdateComponent";
 
@@ -57,6 +58,10 @@ function AppWithRouter() {
           <Route path="/sellpost/read/:sellPostId" element={<Read />} />
           <Route path="/sellpost/update/:sellPostId" element={<Update />} />
       </Routes>
+
+      {location.pathname && !location.pathname.startsWith("/manage") && (
+        <Footer />
+      )}
     </>
 
 

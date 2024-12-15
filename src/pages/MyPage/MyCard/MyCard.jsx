@@ -18,6 +18,7 @@ const MyCard = ({
   setSelectedCardId,
   delButtonAcitve,
   updateButtonActive,
+  LikeExist = false,
 }) => {
   const [isLiked, setIsLiked] = useState(false);
   const [isDelActive, setDelActive] = useState(false);
@@ -36,11 +37,12 @@ const MyCard = ({
     //console.log("Extracted imageFileName: ", imageFileName); // 추출된 파일명을 확인
 
     // 이미지 파일명으로 경로 설정
-    imagePath = `../images/${imageFileName}`;
+    imagePath = `../../images/${imageFileName}`;
   }
   const handleLikeClick = () => {
-    setIsLiked(!isLiked); // 상태를 토글 (true <-> false)
-    //console.log('Like button clicked! Current isLiked:', !isLiked); // 상태 변경 시 콘솔에 출력
+    if (!isLiked) {
+      setIsLiked(!isLiked);
+    }
   };
 
   // status에 따라 텍스트와 이미지 블러 효과 설정
@@ -53,8 +55,13 @@ const MyCard = ({
   };
 
   useEffect(() => {
+    setIsLiked(LikeExist);
+  }, [LikeExist]);
+
+  useEffect(() => {
     setDelActive(delButtonAcitve);
     setUpdateActive(updateButtonActive);
+    console.log("sellPostId: " + post.sellPostId);
   }, [delButtonAcitve, updateButtonActive]);
 
   return (
