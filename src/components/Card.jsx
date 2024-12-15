@@ -5,7 +5,7 @@ import mandoo from '../images/mandoo_img.png';
 import madoozzim from '../images/mandoo_before_like.png';
 import madoozzim2 from '../images/mandoo_after_like.png';
 
-const Card = ({ post }) => {
+const Card = ({ post, onClick }) => {
   const [isLiked, setIsLiked] = useState(false);
      // post.images가 배열일 경우 첫 번째 이미지의 파일명만 추출
      let imagePath = mandoo;
@@ -35,7 +35,7 @@ const Card = ({ post }) => {
  const imageStyle = post.status === 1 ? { filter: 'blur(5px)' } : {}; // 거래완료일 때 블러 처리
 
   return (
-    <S.Card>
+    <S.Card onClick={onClick}>
       <S.ImageWrapper>
       <img src={imagePath} alt={post.title} style={imageStyle}/>
       <S.LikeButton onClick={handleLikeClick}>

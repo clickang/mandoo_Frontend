@@ -64,7 +64,9 @@ const Home = () => {
       {posts?.pages.map((page) => {
         return page.result.content.map((post,_) => (
             <Card key={post.sellPostId} post={post}
-            onClick={() => navigate(`/sellpost/read/${post.sellPostId}`)}
+            onClick={() => {
+              console.log(`Navigating to /sellpost/read/${post.sellPostId}`);
+              navigate(`/sellpost/read/${post.sellPostId}`)}}
              />
         ));
       })}

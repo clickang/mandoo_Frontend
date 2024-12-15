@@ -3,6 +3,8 @@ import { useParams } from "react-router-dom";
 import axios from "axios";
 import * as S from "./ReadStyles";
 import mandoo from "../../images/mandoo_img.png";
+import reportImg from '../../images/report.png';
+import likeImg from '../../images/Like.png';
 import CommentSection from "./CommentSection";
 
 const ReadComponent = () => {
@@ -46,15 +48,17 @@ const ReadComponent = () => {
   const storedUser = localStorage.getItem("user");
   const parsedUser = JSON.parse(storedUser);
   const memberId = parsedUser?.memberId;
-  if (!memberId) {
-    alert("로그인이 필요합니다!");
-  }
+  
 
   // 이벤트 핸들러 (찜 및 신고)
   const handleLike = async () => {
     
     try {
      // 서버로 요청 전송
+    if (!memberId) {
+      alert("로그인이 필요합니다!");
+      console.error("찜 중 오류 발생:", error);
+    }
     const response = await axios.post(`/like/${post.sellPostId}?memberId=${memberId}`);
 
     if (response.status === 200 && response.data.isSuccess) {
@@ -69,8 +73,15 @@ const ReadComponent = () => {
   };
 
   const handleReport = async () => {
+
+    if (!memberId) {
+      alert("로그인이 필요합니다!");
+      console.error("신고 중 오류 발생:", error);
+    }
+
     if (window.confirm("정말 이 게시물을 신고하시겠습니까?")) {
       try {
+        
         const reportData = {
           memberId: memberId,
         };
@@ -120,11 +131,11 @@ const ReadComponent = () => {
             
             <S.ButtonSection>
             <S.ImageButton onClick={handleReport}>
-              <img src="../../images/report.png" alt="신고" />
+              <img src={reportImg} alt="신고" />
             </S.ImageButton>
 
             <S.ImageButton onClick={handleLike}>
-              <img src="../../images/Like.png" alt="찜" />
+              <img src={likeImg} alt="찜" />
             </S.ImageButton>
             
             </S.ButtonSection>
